@@ -1,0 +1,104 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photo Booth</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+
+<div class="menubar" aria-hidden="true">
+  <span class="apple" aria-hidden="true">&#63743;</span><span class="app">Photo Booth</span>
+  <span class="m">File</span><span class="m">Edit</span><span class="m">View</span><span class="m">Camera</span><span class="m">Window</span><span class="m">Help</span>
+  <span class="sp"></span>
+  <span class="camdot" id="camdot" hidden></span>
+  <span id="clock"></span>
+</div>
+
+<main>
+  <section class="window" aria-label="Camera">
+    <header class="titlebar">
+      <div class="lights" role="group" aria-label="Window controls">
+        <button id="closeWindow" type="button" data-g="&#215;" aria-label="Close camera window" title="Close"></button>
+        <button id="minimizeWindow" type="button" data-g="&#8722;" aria-label="Minimize camera window" title="Minimize"></button>
+        <button id="fullscreenWindow" type="button" data-g="&#10530;" aria-label="Enter full screen" title="Enter full screen" aria-pressed="false"></button>
+      </div>
+      <div class="ttl"><b>Photo Booth</b><small id="sub">Demo scene</small></div>
+      <div class="tools">
+        <select class="pop" id="source" aria-label="Camera source"></select>
+        <button class="ibtn" id="mirrorBtn" type="button" aria-pressed="true" title="Mirror the preview" aria-label="Mirror preview">
+          <svg viewBox="0 0 20 20"><path d="M10 3v14" stroke-dasharray="2 2"/><path d="M8 6 3 15h5z"/><path d="M12 6l5 9h-5z"/></svg>
+        </button>
+
+      </div>
+    </header>
+
+    <div class="stage">
+      <div class="capture">
+        <div class="viewfinder" id="vf">
+          <canvas id="view" aria-label="Camera preview"></canvas>
+          <video id="cam" playsinline muted></video>
+          <div class="chip" id="chip" data-k="demo" role="status"><i></i><span id="chipTxt">Starting camera</span></div>
+          <div class="fxname" id="fxname"></div>
+          <div class="count" id="count" aria-hidden="true"></div>
+          <div class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <div class="flash" id="flash"></div>
+          <div class="notice" id="notice" hidden>
+            <p>Camera access isn't available in this view, so this is a demo scene. Open the file in your browser to use your webcam.</p>
+            <div>
+              <button class="btn primary" id="retry" type="button">Try Again</button>
+              <button class="btn" id="usePhoto" type="button">Use a Photo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="seg" role="group" aria-label="Capture mode">
+            <button type="button" id="mSingle" aria-pressed="true" title="One photo" aria-label="One photo">
+              <svg viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12" rx="2"/></svg><span>Photo</span>
+            </button>
+            <button type="button" id="mQuad" aria-pressed="false" title="Four photos in a row, arranged in a grid" aria-label="Four photos">
+              <svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg><span>4-Up</span>
+            </button>
+          </div>
+          <button class="shutter" id="shutter" type="button" aria-label="Take photo" title="Take photo (Space)">
+            <span><svg viewBox="0 0 20 20"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h2l1-1.5h5L13.5 6h2A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5z"/><circle cx="10" cy="11" r="3"/></svg></span>
+          </button>
+          <button class="effects-toggle" id="fxBtn" type="button" aria-pressed="false" aria-controls="fxpanel" title="Show effects">Effects</button>
+        </div>
+      </div>
+
+      <aside class="effects off" id="fxpanel" aria-label="Camera effects">
+        <h2>Effects</h2>
+        <div class="fxgrid" id="fxgrid"></div>
+      </aside>
+    </div>
+
+    <footer class="strip">
+      <div class="reel" id="reel"></div>
+      <span class="tally" id="tally"></span>
+    </footer>
+
+    <div class="lightbox" id="lb" hidden>
+      <div>
+        <div class="pic"><img id="lbImg" alt=""></div>
+        <div class="meta" id="lbMeta"></div>
+      </div>
+      <div class="acts">
+        <button class="btn" id="lbPrev" type="button" aria-label="Newer photo">&lsaquo;</button>
+        <button class="btn" id="lbNext" type="button" aria-label="Older photo">&rsaquo;</button>
+        <button class="btn" id="lbSave" type="button">Save…</button>
+        <button class="btn danger" id="lbDel" type="button">Delete</button>
+        <button class="btn primary" id="lbDone" type="button">Done</button>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </section>
+</main>
+
+<button class="reopen" id="reopenWindow" type="button" hidden>Open Camera</button>
+
+<input id="file" type="file" accept="image/*" hidden>
+
+<script src="scripts.js"></script>
